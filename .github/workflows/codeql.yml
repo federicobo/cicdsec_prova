@@ -81,3 +81,10 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Archive code scan results
+      uses: actions/upload-artifact@v3
+      with:
+        name: ql-scan-reports
+        path: /home/runner/work/_temp/codeql_databases/javascript.zip
+        retention-days: 5
