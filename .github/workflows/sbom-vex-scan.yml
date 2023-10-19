@@ -13,7 +13,7 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    container: quay.io/pluribus_one/sbomx-vex-scanner:latest
+    container: quay.io/pluribus_one/sbom-vex-scanner:latest
 
     steps:
     - uses: actions/checkout@v3
