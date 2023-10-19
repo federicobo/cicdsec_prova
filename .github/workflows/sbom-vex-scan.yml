@@ -19,17 +19,24 @@ jobs:
     - uses: actions/checkout@v3
     - run: cdxgen --format json -o "vuln_app_bom.json" --spec-version=1.4
     - run: osv-scanner -S "vuln_app_bom.json" --format json  > "vuln_app_vex.json"
-
-  upload:
-    runs-on: ubuntu-latest
-    if: always()
-    needs: [scan]
-    steps:
+    - run: ls -la
     - name: Archive code coverage results
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: sbom-vex-jsons
         path: vuln_app_*.json
+
+  # upload:
+  #   runs-on: ubuntu-latest
+  #   if: always()
+  #   needs: [scan]
+  #   steps:
+  #   - name: Archive code coverage results
+  #     if: always()
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: sbom-vex-jsons
+  #       path: vuln_app_*.json
         retention-days: 5
       
