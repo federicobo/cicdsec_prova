@@ -22,6 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - run: cd {{ prj_folder }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -29,7 +30,6 @@ jobs:
         cache: 'yarn'
 
     - run: |
-        cd {{ prj_folder }}
         yarn install --immutable
         yarn test:CI
 
