@@ -12,12 +12,17 @@ on:
 
 jobs:
   scan:
+    name: Scan projects
     runs-on: ubuntu-latest
     container: quay.io/pluribus_one/sbom_vex_scanner:latest
+    strategy:
+      matrix:
+        prj_folder: ['vuln_apps/react-app', 'vuln_apps/dvna', 'vuln_apps/OWASPWebGoatPHP']
 
     steps:
     - uses: actions/checkout@v3
     - run: |
+        cd {{ prj_folder }}
         cdxgen --format json -o "vuln_app_bom.json" --spec-version=1.4
         osv-scanner -S "vuln_app_bom.json" --format json  > "vuln_app_vex.json"
     - name: Archive code coverage results

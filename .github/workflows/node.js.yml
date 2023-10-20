@@ -16,7 +16,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
+        prj_folder: ['vuln_apps/react-app']
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,8 +27,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --immutable
-    - run: yarn test:CI
+
+    - run: |
+        cd {{ prj_folder }}
+        yarn install --immutable
+        yarn test:CI
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
