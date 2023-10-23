@@ -8,9 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Setup Docker buildx
-      #   id: docker-build
-      #   uses: docker/setup-buildx-action@2.5.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         id: docker-login
@@ -23,7 +22,7 @@ jobs:
         id: docker-dvwa-build
         uses: docker/build-push-action@v5
         with:
-          context: vuln_apps/dvna/
+          context: "{{defaultContext}}:vuln_apps/dvna/"
           push: false
           tags: dvwa:latest
 
