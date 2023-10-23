@@ -19,22 +19,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: List Files
-        id: list-files
-        uses: mirko-felice/list-files-action@v3.0.5
-        with:
-          repo: ${{ github.repository }}
-          ref: ${{ github.ref }}
-          path: "."
-          ext: ".yml"
-
       - name: Build DVNA Docker image
         id: docker-dvna-build
         uses: docker/build-push-action@v5
         with:
           context: "${{ github.workspace }}/vuln_apps/dvna"
           push: false
+          load: true
           tags: dvna:latest
+
+      - run: docker images
 
       - name: Docker Scout CVEs
         uses: docker/scout-action@v1
