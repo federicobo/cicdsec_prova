@@ -23,9 +23,13 @@ jobs:
         id: docker-dvna-build
         uses: docker/build-push-action@v5
         with:
-          context: "./vuln_apps/dvna/"
+          context: "vuln_apps/dvna"
           push: false
           tags: dvna:latest
+      - run: |
+          pwd  
+          ls
+          echo ${{ github.workspace }}
 
       - name: Docker Scout CVEs
         uses: docker/scout-action@v1
