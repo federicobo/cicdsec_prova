@@ -19,11 +19,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - run: cat ${{ github.workspace }}/vuln_apps/dvna/Dockerfile
+
       - name: Build DVNA Docker image
         id: docker-dvna-build
         uses: docker/build-push-action@v5
         with:
-          context: vuln_apps/dvna
+          context: "${{ github.workspace }}/vuln_apps/dvna"
           push: false
           tags: dvna:latest
 
