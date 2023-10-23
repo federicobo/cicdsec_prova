@@ -19,14 +19,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Test
-        run: ls
-
       - name: Build DVNA Docker image
         id: docker-dvna-build
         uses: docker/build-push-action@v5
+        run: echo "${ls}"
         with:
-          context: "{{defaultContext}}:vuln_apps/dvna/Dockerfile"
+          context: "./vuln_apps/dvna/"
           push: false
           tags: dvna:latest
 
