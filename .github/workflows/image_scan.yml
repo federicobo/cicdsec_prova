@@ -3,6 +3,7 @@ name: Images scanner and assesment
 on:
   workflow_dispatch:
 
+
 jobs:
   image-security-scan:
     runs-on: ubuntu-latest
@@ -18,20 +19,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build DVWA Docker image
-        id: docker-dvwa-build
+      - name: Test
+        run: ls
+
+      - name: Build DVNA Docker image
+        id: docker-dvna-build
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:vuln_apps/dvna/"
+          context: "{{defaultContext}}:vuln_apps/dvna/Dockerfile"
           push: false
-          tags: dvwa:latest
+          tags: dvna:latest
 
       - name: Docker Scout CVEs
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: local://dvwa:latest
-          sarif-file: dvwa-cves.json
+          image: local://dvna:latest
+          sarif-file: dvna-cves.json
       # - name: Upload CVEs result
       #   id: upload-cves
       #   uses: github/codeql-action/upload-sarif@v2
