@@ -3,20 +3,32 @@ name: Images scanner and assesment
 on:
   workflow_dispatch:
 
-
 jobs:
-  security-scan:
+  image-security-scan:
     runs-on: ubuntu-latest
 
     steps:
       - name: Login to Docker Hub
+        id: docker-login
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Pull Docker Image
+        id: docker-pull
         run: docker pull debian:11
 
-      - name: Docker Scout
-        run: docker images
+      - name: Docker Scout CVEs
+        uses: docker/scout-action@v1
+        with:
+          command: cves
+          image: local://debian:11
+          only-severities: critial,high,medium
+          sarif-file: image-cves.json
+
+      - name: Upload CVEs result
+        id: upload-cves
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: image-cves.json
