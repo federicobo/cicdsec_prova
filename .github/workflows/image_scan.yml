@@ -22,7 +22,6 @@ jobs:
       - name: Build DVNA Docker image
         id: docker-dvna-build
         uses: docker/build-push-action@v5
-        run: echo "${ls}"
         with:
           context: "./vuln_apps/dvna/"
           push: false
