@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         language: ["java"]
-        prj_folder: ["vuln_apps/vulnadoo"]
+        prj_folder: ["vuln_apps/vulnado"]
         # language: ['javascript-typescript' ]
         # prj_folder: ['vuln_apps/dvna']
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
@@ -46,13 +46,13 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - if: matrix.language == 'java-kotlin'
+      - if: matrix.language == 'java'
         name: Compile project
         run: |
           cd ${{ matrix.prj_folder }}
           ./mvnw -B clean package -DskipTests=true
 
-      - if: matrix.language != 'java-kotlin'
+      - if: matrix.language != 'java'
         name: Autobuild
         uses: github/codeql-action/autobuild@v2
 
