@@ -76,8 +76,7 @@ jobs:
       - if: matrix.language == 'java-kotlin'
         name: Build Java
         run: |
-          make bootstrap
-          make release
+          mvn spring-boot:build-info
 
       - if: matrix.language != 'java-kotlin'
         name: Autobuild
