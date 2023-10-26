@@ -37,7 +37,6 @@ jobs:
         # prj_folder: ['vuln_apps/dvna']
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -51,7 +50,7 @@ jobs:
         name: Compile project
         run: |
           cd ${{ matrix.prj_folder }}
-          ./mvnw -B -ntp clean package -DskipTests=true
+          ./mvnw -B clean package -DskipTests=true
 
       - if: matrix.language != 'java-kotlin'
         name: Autobuild
