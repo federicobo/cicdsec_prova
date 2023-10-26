@@ -52,7 +52,10 @@ jobs:
 
       - if: matrix.language == 'java-kotlin'
         name: Compile project
-        run: ./mvnw -B -ntp clean package -DskipTests=true
+        run: |
+          pwd
+          ls -la 
+          ./mvnw -B -ntp clean package -DskipTests=true
 
       - if: matrix.language != 'java-kotlin'
         name: Autobuild
