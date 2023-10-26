@@ -31,8 +31,6 @@ jobs:
           load: true
           tags: dvna:latest
 
-      - run: docker images
-
       - name: Docker Scout CVEs
         uses: docker/scout-action@v1
         with:
