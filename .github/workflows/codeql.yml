@@ -47,14 +47,10 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: change folder
-        run: cd ${{ matrix.prj_folder }}
-
       - if: matrix.language == 'java-kotlin'
         name: Compile project
         run: |
-          pwd
-          ls -la 
+          cd ${{ matrix.prj_folder }}
           ./mvnw -B -ntp clean package -DskipTests=true
 
       - if: matrix.language != 'java-kotlin'
