@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["java-kotlin"]
+        language: ["java"]
         prj_folder: ["vuln_apps/vulnadoo"]
         # language: ['javascript-typescript' ]
         # prj_folder: ['vuln_apps/dvna']
@@ -58,8 +58,8 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-        with:
-          category: "/language:${{matrix.language}}"
+        # with:
+        #   category: "/language:${{matrix.language}}"
 
       - name: Archive code scan results
         uses: actions/upload-artifact@v3
