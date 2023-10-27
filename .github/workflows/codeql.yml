@@ -32,10 +32,10 @@ jobs:
       fail-fast: false
       matrix:
         language: ["java-kotlin", "javascript-typescript"]
-        prj_folder: ["vuln_apps/vulnado", "vuln_apps/dvna"]
-        exclude:
-          - language: "java-kotlin"
-            prj_folder: "vuln_apps/dvna"
+        # prj_folder: ["vuln_apps/vulnado", "vuln_apps/dvna"]
+        # exclude:
+        #   - language: "java-kotlin"
+        #     prj_folder: "vuln_apps/dvna"
             
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
 
@@ -51,7 +51,7 @@ jobs:
       - if: matrix.language == 'java-kotlin'
         name: Compile project
         run: |
-          cd ${{ matrix.prj_folder }}
+          cd vuln_apps/vulnado
           ./mvnw -B clean package -DskipTests=true
 
       - if: matrix.language != 'java-kotlin'
@@ -65,10 +65,3 @@ jobs:
 
       - name: List files  
         run: ls /home/runner/work/_temp/codeql_databases
-
-      - name: Archive code scan results
-        uses: actions/upload-artifact@v3
-        with:
-          name: ql-scan-reports
-          path: /home/runner/work/_temp/codeql_databases/javascript.zip
-          retention-days: 5
