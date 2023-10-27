@@ -31,5 +31,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: sbom-vex-jsons
-        path: vuln_apps/${{matrix.prj_folder}}_*.json
+        path: vuln_apps/**/${{matrix.prj_folder}}_*.json
         retention-days: 5
