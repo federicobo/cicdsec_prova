@@ -17,19 +17,19 @@ jobs:
     container: quay.io/pluribus_one/sbom_vex_scanner:latest
     strategy:
       matrix:
-        prj_folder: [ 'vuln_apps/dvna', 'vuln_apps/vulnado']
+        prj_folder: [ 'dvna', 'vulnado']
 
     steps:
     - uses: actions/checkout@v3
     - run: |
-        cd ${{ matrix.prj_folder }}
-        cdxgen --format json -o "vuln_app_bom.json" --spec-version=1.4
-        osv-scanner -S "vuln_app_bom.json" --format json  > "vuln_app_vex.json"
-        
+        cd vuln_apps/${{ matrix.prj_folder }}
+        cdxgen --format json -o "${{matrix.prj_folder}}_bom.json" --spec-version=1.4
+        osv-scanner -S "${{matrix.prj_folder}}_bom.json" --format json  > "${{matrix.prj_folder}}_vex.json"
+
     - name: Archive code coverage results
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: sbom-vex-jsons
-        path: vuln_app_*.json
+        path: vuln_apps/${{matrix.prj_folder}}_*.json
         retention-days: 5
