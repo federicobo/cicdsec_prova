@@ -34,12 +34,9 @@ jobs:
         language: ["java", "javascript-typescript"]
         prj_folder: ["vuln_apps/vulnado", "vuln_apps/dvna"]
         exclude:
-        # excludes node 8 on macOS
           - language: "java"
             prj_folder: "vuln_apps/dvna"
 
-        # language: ['javascript-typescript' ]
-        # prj_folder: ['vuln_apps/dvna']
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
 
     steps:
