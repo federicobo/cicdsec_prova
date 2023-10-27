@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     container: quay.io/pluribus_one/sbom_vex_scanner:latest
     strategy:
+      fail-fast: false
       matrix:
         prj_folder: [ 'dvna', 'vulnado']
 
