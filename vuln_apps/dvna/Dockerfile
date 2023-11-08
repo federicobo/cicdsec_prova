@@ -1,8 +1,12 @@
+# Damn Vulnerable NodeJS Application
+
 FROM node:carbon
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm install
+RUN chmod +x /app/entrypoint.sh \
+	&& npm install
 
+CMD ["bash", "/app/entrypoint.sh"]
