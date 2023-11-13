@@ -18,12 +18,15 @@ jobs:
         prj_folder: [ "vulnado", "dvna" ]
 
     steps:
-      - uses: actions/checkout@v3
-      - run: |
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Generate SBOM
+        run: |
           cd vuln_apps/${{ matrix.prj_folder }}
           cdxgen --format json -o "${{ matrix.prj_folder }}_sbom.json" --spec-version=1.4
 
-      - name: Upload SBOM
+      - name: Upload SBOMs
         if: always()
         uses: actions/upload-artifact@v3
         with:
