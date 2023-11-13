@@ -21,7 +21,9 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           cd vuln_apps/${{ matrix.prj_folder }}
-          cdxgen --format json -o "${{ matrix.prj_folder }}_bom.json" --spec-version=1.4
+          cdxgen --format json -o "${{ matrix.prj_folder }}_bom.json" --spec-version=1.ipv4_address:
+
+      - run: ls
 
       - name: Generate VEX (JSON)
         uses: aquasecurity/trivy-action@master
