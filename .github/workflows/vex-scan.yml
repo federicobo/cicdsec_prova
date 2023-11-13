@@ -24,7 +24,7 @@ jobs:
           cdxgen --format json -o "${{ matrix.prj_folder }}_bom.json" --spec-version=1.4
 
       - name: Generate VEX (JSON)
-        uses: acquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: "sbom"
           input: "${{ matrix.prj_folder }}_bom.json"
@@ -33,7 +33,7 @@ jobs:
           scanners: "vuln"
 
       - name: Generate VEX (Human)
-        uses: acquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: "sbom"
           input: "${{ matrix.prj_folder }}_bom.json"
