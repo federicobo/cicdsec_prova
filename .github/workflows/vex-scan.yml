@@ -1,0 +1,49 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: VEX generation and upload
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  scan:
+    name: Scan projects
+    runs-on: ubuntu-latest
+    container: quay.io/pluribus_one/sbom_vex_scanner:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        prj_folder: [ "dvna", "vulnado" ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cd vuln_apps/${{ matrix.prj_folder }}
+          cdxgen --format json -o "${{ matrix.prj_folder }}_bom.json" --spec-version=1.4
+
+      - name: Generate VEX (JSON)
+        uses: acquasecurity/trivy-action@master
+        with:
+          scan-type: "sbom"
+          input: "${{ matrix.prj_folder }}_bom.json"
+          format: "cyclonedx"
+          output: "${{ matrix.prj_folder }}_vex.json"
+          scanners: "vuln"
+
+      - name: Generate VEX (Human)
+        uses: acquasecurity/trivy-action@master
+        with:
+          scan-type: "sbom"
+          input: "${{ matrix.prj_folder }}_bom.json"
+          format: "table"
+          output: "${{ matrix.prj_folder }}_vex_human"
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom-vex-jsons
+          path: vuln_apps/**/${{matrix.prj_folder}}_*
+          retention-days: 5
