@@ -12,19 +12,20 @@ jobs:
     runs-on: ubuntu-latest
     container: quay.io/pluribus_one/sbom_vex_scanner:latest
     strategy:
+      fail-fast: false
       matrix:
-        projects_folder: ["vuln_apps/vulnado", "vuln_apps/dvna"]
+        prj_folder: ["vulndado", "dvna"]
 
     steps:
       - uses: actions/checkout@v3
       - run: |
-          cd ${{ projects_folder }}
-          cdxgen --format json -o "sbom.json"
+          cd vuln_apps/${{ matrix.prj_folder }}
+          cdxgen --format json -o "${{ matrix.prj_folder}}_sbom.json"
 
       - name: Upload SBOM results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: sbom-jsons
-          path: vuln_app_*.json
+          path: vuln_apps/**/${{matrix.prj_folder}}_*.json
           retention-days: 5
