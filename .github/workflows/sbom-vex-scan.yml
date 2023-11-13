@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: Sbom/Vex generation and upload
 
 on:
   workflow_dispatch:
@@ -11,31 +11,26 @@ on:
   #   branches: [ "main" ]
 
 jobs:
-  build:
+  scan:
+    name: Scan projects
     runs-on: ubuntu-latest
-
+    container: quay.io/pluribus_one/sbom_vex_scanner:latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [18.x]
-        prj_folder: ['vuln_apps/react-app']
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        prj_folder: [ 'dvna', 'vulnado']
 
     steps:
     - uses: actions/checkout@v3
-    - run: cd ${{ prj_folder }}
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-
     - run: |
-        yarn install --immutable
-        yarn test:CI
+        cd vuln_apps/${{ matrix.prj_folder }}
+        cdxgen --format json -o "${{matrix.prj_folder}}_bom.json" --spec-version=1.4
+        osv-scanner -S "${{matrix.prj_folder}}_bom.json" --format json  > "${{matrix.prj_folder}}_vex.json"
 
     - name: Archive code coverage results
+      if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: code-coverage-report
-        path: coverage/lcov-report/
+        name: sbom-vex-jsons
+        path: vuln_apps/**/${{matrix.prj_folder}}_*.json
         retention-days: 5
