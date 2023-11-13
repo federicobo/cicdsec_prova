@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  scan:
+  sbom-scan:
     name: Scan projects
     runs-on: ubuntu-latest
     container: quay.io/pluribus_one/sbom_vex_scanner:latest

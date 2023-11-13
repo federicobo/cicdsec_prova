@@ -6,10 +6,15 @@ on:
 
 jobs:
   image-security-scan:
+    name: Images Scanner
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        prj_folder: [ "dvna", "vulnado" ]
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
@@ -22,23 +27,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build DVNA Docker image
-        id: docker-dvna-build
+      - name: Build Docker image
+        id: build-image
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.workspace }}/vuln_apps/dvna"
+          context: "${{ github.workspace }}/vuln_apps/${{ matrix.prj_folder }}"
           push: false
           load: true
-          tags: dvna:latest
+          tags: ${{ matrix.prj_folder }}:latest
 
       - name: Docker Scout CVEs
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: local://dvna:latest
-          sarif-file: dvna-cves.json
-      # - name: Upload CVEs result
-      #   id: upload-cves
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: image-cves.json
+          image: local://:latest
+          sarif-file: ${{ matrix.prj_folder }}-cves.json

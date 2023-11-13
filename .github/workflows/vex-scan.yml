@@ -8,8 +8,8 @@ on:
 
 
 jobs:
-  scan:
-    name: Scan projects
+  vex-scan:
+    name: VEX Scan
     runs-on: ubuntu-latest
     container: quay.io/pluribus_one/sbom_vex_scanner:latest
     strategy:
@@ -38,7 +38,7 @@ jobs:
         with:
           scan-type: "sbom vuln_apps/${{ matrix.prj_folder }}/${{ matrix.prj_folder }}_bom.json"
           format: "table"
-          output: "vuln_apps/${{ matrix.prj_folder }}/${{ matrix.prj_folder }}_vex.json"
+          output: "vuln_apps/${{ matrix.prj_folder }}/${{ matrix.prj_folder }}_vex_human"
 
       - name: Upload VEXs
         if: always()
