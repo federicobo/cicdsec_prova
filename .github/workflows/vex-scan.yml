@@ -30,7 +30,6 @@ jobs:
           input: "${{ matrix.prj_folder }}_bom.json"
           format: "cyclonedx"
           output: "${{ matrix.prj_folder }}_vex.json"
-          scanners: "vuln"
 
       - name: Generate VEX (Human)
         uses: aquasecurity/trivy-action@master
