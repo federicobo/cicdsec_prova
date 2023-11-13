@@ -26,14 +26,14 @@ jobs:
       - name: Generate VEX (JSON)
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: "sbom ${ matrix.prj_folder}_bom.json"
+          scan-type: "sbom ${{ matrix.prj_folder }}_bom.json"
           format: "cyclonedx"
           output: "${{ matrix.prj_folder }}_vex.json"
 
       - name: Generate VEX (Human)
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: "sbom"
+          scan-type: "sbom ${{ matrix.prj_folder }}_bom.json"
           format: "table"
           output: "${{ matrix.prj_folder }}_vex_human"
 
