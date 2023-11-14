@@ -25,11 +25,12 @@ jobs:
         run: |
           cd vuln_apps/${{ matrix.prj_folder }}
           cdxgen --format json -o "${{ matrix.prj_folder }}_sbom.json" --spec-version=1.4
+          cdxgen -p --spec-version=1.4 > ${{ matrix.prj_folder }}_sbom_human
 
       - name: Upload SBOMs
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: sbom-jsons
-          path: vuln_apps/**/${{matrix.prj_folder}}_*.json
+          path: vuln_apps/**/${{matrix.prj_folder}}_*
           retention-days: 5

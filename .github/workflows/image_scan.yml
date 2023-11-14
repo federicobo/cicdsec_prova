@@ -1,4 +1,4 @@
-name: Images scanner and assesment
+name: Images scanner
 
 on:
   workflow_dispatch:
