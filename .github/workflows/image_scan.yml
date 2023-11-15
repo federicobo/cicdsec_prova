@@ -5,7 +5,7 @@ on:
 
 
 jobs:
-  image-security-scan:
+  images-security-scan:
     name: Images Scanner
     runs-on: ubuntu-latest
     strategy:
@@ -40,5 +40,5 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: local://:latest
+          image: local://${{ matrix.prj_folder }}:latest
           sarif-file: ${{ matrix.prj_folder }}-cves.json
